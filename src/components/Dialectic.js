@@ -5,10 +5,12 @@ const cardStyles = {
     height: '50px',
 };
 
-const Dialectic = () => {
+const Dialectic = ({dialectic}) => {
     return ( 
         <Box style={cardStyles}>
-            <Card />
+            <Card >
+                {dialectic.name}
+            </Card>
         </Box>
     );
 }

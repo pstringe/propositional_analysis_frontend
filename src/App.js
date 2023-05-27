@@ -8,23 +8,68 @@ import {
 } from "react-router-dom";
 import './App.css';
 
+const dialecticList = [
+  {
+    name: 'Dialectic 1',
+    id: 1,
+    propositions: [
+      {
+        id: 1,
+        string: 'Proposition 1',
+      },
+      {
+        id: 2,
+        string: 'Proposition 2',
+      },
+    ]
+  },
+  {
+    name: 'Dialectic 2',
+    id: 2,
+    propositions: [
+      {
+        id: 1,
+        string: 'Proposition 1',
+      },
+      {
+        id: 2,
+        string: 'Proposition 2',
+      },
+    ]
+  },
+  {
+    name: 'Dialectic 3',
+    id: 3,
+    propositions: [
+      {
+        id: 1,
+        string: 'Proposition 1',
+      },
+      {
+        id: 2,
+        string: 'Proposition 2',
+      },
+    ]
+  },
+];
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dialectic />
+    element: <Dialectic dialecticList={dialecticList}/>
   },
   {
     path: "/dialectic",
-    element: <Dialectic />
+    element: <Dialectic dialecticList={dialecticList}/>
   },
   {
-    path: "/propostions",
-    element: <Propositions />
-    ,
+    path: "/propositions/:dialecticId",
+    element: <Propositions/>
   },
 ]);
 
 function App() {
+
   return (
     <div className="App">
       <Container maxWidth="sm">

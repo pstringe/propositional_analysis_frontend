@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import Dialectic from './components/Dialectic';
+import { useFetch, postFetch, DIALECTIC_ROUTE } from './utils/useFetch';
 import { useNavigate } from 'react-router-dom';
 
 const cardStyles = {
@@ -9,14 +11,17 @@ const cardStyles = {
 
 const DialecticList = ({dialecticList}) => {
     const navigate = useNavigate();
+    const [newDialectic, setNewDialectic] = useState({});
 
     const handleClick = (e, idx) => {
         console.log(idx);
         navigate(`/propositions/${idx}`);
     }
 
-    const handleSubmit = (e, idx) => {
+    const handleSubmit = async (e, idx) => {
         console.log(idx);
+        const res = await postFetch(DIALECTIC_ROUTE, {});
+        console.log({res});
     }
 
     return (

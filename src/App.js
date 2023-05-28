@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Container } from '@mui/material';
 import Propositions from './Propositions';
 import Dialectic from './DialecticList';
@@ -68,7 +69,43 @@ const router = createBrowserRouter([
   },
 ]);
 
+const DIALECTIC_ROUTE = "/dialectic"
+
+const useFetch = (route, method='GET', payload={}, ) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    const API_URL = "http://localhost:8080";
+    const url = `${API_URL}${route}`;
+    const HEADERS = {
+      method,
+      mode: "cors",
+      credentials: "same-origin",
+      headers: method === 'POST' ? {
+        "Content-Type": "application/json",
+        "body": JSON.stringify(payload)
+      }: {}
+    }
+    setLoading(true);
+    const res = fetch(url, method === 'GET' ? {} : HEADERS)
+    .then((res) => {
+      return res.json()
+    }).then((json) => {
+      console.log(json)
+      setData(json)
+      setLoading(false);
+    })
+  });
+  return [data, loading]
+}
+
 function App() {
+  const [data, loading] = useFetch(DIALECTIC_ROUTE)
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   return (
     <div className="App">

@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import { Box, Button } from '@mui/material';
 import Dialectic from './components/Dialectic';
-import { useFetch, postFetch, DIALECTIC_ROUTE } from './utils/useFetch';
+import Dialog from './components/Dialectic'; 
+import { postFetch, DIALECTIC_ROUTE } from './utils/useFetch';
 import { useNavigate } from 'react-router-dom';
+import DialogCard from './components/DialogCard';
 
 const cardStyles = {
     width: '100%',
@@ -11,17 +13,19 @@ const cardStyles = {
 
 const DialecticList = ({dialecticList}) => {
     const navigate = useNavigate();
-    const [newDialectic, setNewDialectic] = useState({});
+    const [openCreateDialectic, setOpenCreateDialectic] = useState(false);
 
     const handleClick = (e, idx) => {
         console.log(idx);
         navigate(`/propositions/${idx}`);
     }
 
-    const handleSubmit = async (e, idx) => {
-        console.log(idx);
-        const res = await postFetch(DIALECTIC_ROUTE, {});
-        console.log({res});
+    const handleSubmit = async (content) => {
+        console.log({content});
+        
+        const res = await postFetch(DIALECTIC_ROUTE, {
+            name: content.text
+        });
     }
 
     return (
@@ -34,11 +38,12 @@ const DialecticList = ({dialecticList}) => {
                 console.log({idx})
                 return (
                     <div styles={cardStyles} onClick={(e) => handleClick(e, idx)}>
-                        <Dialectic  key={idx} dialectic={dialectic} />
+                        <Dialectic key={idx} dialectic={dialectic} />
                     </div>
                 )
             })}
-            <Button onClick={(e, idx) => handleSubmit(e, idx)}>New</Button>
+            <Button onClick={() => setOpenCreateDialectic(true)}>New</Button>
+            <DialogCard onSubmit={(e, idx) => handleSubmit(e, idx)} onClose={() => setOpenCreateDialectic(false)} open={openCreateDialectic}/>
         </Box>
     );
 }

@@ -70,10 +70,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-
-
-
-
 function App() {
   const [data, loading] = useFetch(DIALECTIC_ROUTE)
 

@@ -22,8 +22,13 @@ export const postFetch = async (route, payload={}, opHeaders={}) => {
 
 export const useFetch = (route, method='GET') => {
     const [data, setData] = useState([]);
+    const [refreshToggle, setResfreshToggle] = useState(false);
     const [loading, setLoading] = useState(false);
     
+    const refresh = () => {
+      setResfreshToggle(!refreshToggle);
+    }
+
     useEffect(() => {
       const url = `${API_URL}${route}`;
       const HEADERS = {
@@ -41,6 +46,6 @@ export const useFetch = (route, method='GET') => {
         setData(json)
         setLoading(false);
       })
-    }, []);
-    return [data, loading]
+    }, [refreshToggle]);
+    return [data, loading, refresh]
 }

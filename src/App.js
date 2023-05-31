@@ -9,7 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './App.css';
-
+/*
 const dialecticList = [
   {
     name: 'Dialectic 1',
@@ -54,29 +54,34 @@ const dialecticList = [
     ]
   },
 ];
+*/
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Dialectic dialecticList={dialecticList}/>
-  },
-  {
-    path: "/dialectic",
-    element: <Dialectic dialecticList={dialecticList}/>
-  },
-  {
-    path: "/propositions/:dialecticId",
-    element: <Propositions/>
-  },
-]);
 
 function App() {
-  const [data, loading] = useFetch(DIALECTIC_ROUTE)
+  const [data, loading, refresh] = useFetch(DIALECTIC_ROUTE)
+  const [dialecticList, setDialecticList] = useState([]);
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Dialectic dialecticList={dialecticList} refresh={refresh}/>
+    },
+    {
+      path: "/dialectic",
+      element: <Dialectic dialecticList={dialecticList} refresh={refresh}/>
+    },
+    {
+      path: "/propositions/:dialecticId",
+      element: <Propositions/>
+    },
+  ]);
+
+  
   useEffect(() => {
     console.log(data);
-  }, []);
-
+    setDialecticList(data);
+  }, [data]);
+ 
   return (
     <div className="App">
       <Container maxWidth="sm">

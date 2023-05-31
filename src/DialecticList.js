@@ -11,7 +11,7 @@ const cardStyles = {
     height: '50px',
 };
 
-const DialecticList = ({dialecticList}) => {
+const DialecticList = ({dialecticList, refresh}) => {
     const navigate = useNavigate();
     const [openCreateDialectic, setOpenCreateDialectic] = useState(false);
 
@@ -23,9 +23,10 @@ const DialecticList = ({dialecticList}) => {
     const handleSubmit = async (content) => {
         console.log({content});
         
-        const res = await postFetch(DIALECTIC_ROUTE, {
+        await postFetch(DIALECTIC_ROUTE, {
             name: content.text
         });
+        refresh()
     }
 
     return (

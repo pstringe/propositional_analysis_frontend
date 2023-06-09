@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { Dialog, TextField, Button } from '@mui/material';
-import { title } from 'process';
+import React from 'react';
+import { FormContent } from '../types/interfaces';
 
 const styles = {
     display: 'flex',
@@ -9,11 +10,19 @@ const styles = {
     height: 200
 }
 
-const DialogCard = ({open, onSubmit, onClose}) => {
-    const [content, setContent] = useState({});
+interface DialogCardProps {
+    open: boolean;
+    onSubmit: (e: SyntheticEvent<EventTarget>, content: FormContent) => Promise<void>;
+    onClose: () => {};
+}
 
-    const handleChange = (e) => {
-        const text = e.target.value;
+
+
+const DialogCard = ({open, onSubmit, onClose}: DialogCardProps) => {
+    const [content, setContent] = useState({} as FormContent);
+
+    const handleChange = (e: any) => {
+        const text = e.currentTarget.value;
         console.log({text});
         setContent({
             ...content,
@@ -21,10 +30,9 @@ const DialogCard = ({open, onSubmit, onClose}) => {
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault()
-        console.log({content})
-        onSubmit(content)
+        onSubmit(e, content);
         onClose()
     }
 

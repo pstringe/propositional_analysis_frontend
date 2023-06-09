@@ -2,64 +2,18 @@ import { useState, useEffect } from 'react'
 import { Container } from '@mui/material';
 import Propositions from './Propositions';
 import Dialectic from './DialecticList';
+import { Dialectic as IDialectic} from './types/interfaces';
 import { useFetch, DIALECTIC_ROUTE } from './utils/useFetch';
-
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import './App.css';
-/*
-const dialecticList = [
-  {
-    name: 'Dialectic 1',
-    id: 1,
-    propositions: [
-      {
-        id: 1,
-        string: 'Proposition 1',
-      },
-      {
-        id: 2,
-        string: 'Proposition 2',
-      },
-    ]
-  },
-  {
-    name: 'Dialectic 2',
-    id: 2,
-    propositions: [
-      {
-        id: 1,
-        string: 'Proposition 1',
-      },
-      {
-        id: 2,
-        string: 'Proposition 2',
-      },
-    ]
-  },
-  {
-    name: 'Dialectic 3',
-    id: 3,
-    propositions: [
-      {
-        id: 1,
-        string: 'Proposition 1',
-      },
-      {
-        id: 2,
-        string: 'Proposition 2',
-      },
-    ]
-  },
-];
-*/
-
+import React from 'react';
 
 function App() {
-  const [data, loading, refresh] = useFetch(DIALECTIC_ROUTE)
-  const [dialecticList, setDialecticList] = useState([]);
+  const [data, loading, refresh] = useFetch<IDialectic>(DIALECTIC_ROUTE)
+  const [dialecticList, setDialecticList] = useState<IDialectic[]>([]);
 
   const router = createBrowserRouter([
     {
@@ -78,8 +32,7 @@ function App() {
 
   
   useEffect(() => {
-    console.log(data);
-    setDialecticList(data);
+    setDialecticList(data as IDialectic[]);
   }, [data]);
  
   return (

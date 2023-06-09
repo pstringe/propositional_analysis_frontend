@@ -1,31 +1,34 @@
+import { SyntheticEvent } from 'react';
 import {useState } from 'react';
-import { Box, Button } from '@mui/material';
-import Dialectic from './components/Dialectic';
-import Dialog from './components/Dialectic'; 
 import { postFetch, DIALECTIC_ROUTE } from './utils/useFetch';
 import { useNavigate } from 'react-router-dom';
+import { Box, Button } from '@mui/material';
+import Dialectic from './components/DialecticItem';
 import DialogCard from './components/DialogCard';
+import { Dialectic as IDialectic } from './types/interfaces';
+import { FormContent } from './types/interfaces';
 
 const cardStyles = {
     width: '100%',
     height: '50px',
 };
 
-const DialecticList = ({dialecticList, refresh}) => {
+interface DialecticListProps {
+    dialecticList: IDialectic[];
+    refresh: Function;
+}
+
+const DialecticList = ({dialecticList, refresh}: DialecticListProps) => {
     const navigate = useNavigate();
     const [openCreateDialectic, setOpenCreateDialectic] = useState(false);
 
-    const handleClick = (e, idx) => {
+    const handleClick = (e: SyntheticEvent, idx: number) => {
         console.log(idx);
         navigate(`/propositions/${idx}`);
     }
-
-    const handleSubmit = async (content) => {
-        console.log({content});
-        
-        await postFetch(DIALECTIC_ROUTE, {
-            name: content.text
-        });
+   
+    const handleSubmit = async (e: SyntheticEvent<EventTarget>, dialectic: FormContent) => {
+        await postFetch(DIALECTIC_ROUTE, dialectic);
         refresh()
     }
 
@@ -35,16 +38,16 @@ const DialecticList = ({dialecticList, refresh}) => {
             margin: '1rem'
         }}>
             <h1>Dialectic</h1>
-            {dialecticList?.map((dialectic, idx) => {
+            {dialecticList?.length ?? dialecticList?.map((dialectic, idx) => {
                 console.log({idx})
                 return (
-                    <div styles={cardStyles} onClick={(e) => handleClick(e, idx)}>
+                    <div style={cardStyles} onClick={(e) => handleClick(e, idx)}>
                         <Dialectic key={idx} dialectic={dialectic} />
                     </div>
                 )
             })}
             <Button onClick={() => setOpenCreateDialectic(true)}>New</Button>
-            <DialogCard onSubmit={(e, idx) => handleSubmit(e, idx)} onClose={() => setOpenCreateDialectic(false)} open={openCreateDialectic}/>
+            <DialogCard onSubmit={handleSubmit} onClose={async () => setOpenCreateDialectic(false)} open={openCreateDialectic}/>
         </Box>
     );
 }

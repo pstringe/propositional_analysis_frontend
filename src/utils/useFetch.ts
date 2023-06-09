@@ -1,31 +1,36 @@
 import {useState, useEffect} from 'react';
 
 export const DIALECTIC_ROUTE = "/dialectic";
+export const PROPOSITIONS_ROUTE = '/proposition'
+
 const API_URL = "http://localhost:8080";
 
-const defaultHeaders =  {
-    "Content-Type": "application/json",
-};
+export const paramaterizeRoute = () => {
 
-export const postFetch = async (route, payload={}, opHeaders={}) => {
+}
+
+export const postFetch = async (route: string, payload={}, opHeaders={}) => {
     const url = `${API_URL}${route}`;
-    const request = {
+    const requsetHeaders: HeadersInit = new Headers();
+    requsetHeaders.set("Content-Type", 'application/json');
+  
+    const request: RequestInit = {
         method: 'POST',
         mode: "cors",
         credentials: "same-origin",
-        headers: {...defaultHeaders, opHeaders},
+        headers: requsetHeaders,
         body: JSON.stringify(payload),
 
     }
     return await fetch(url, request);
 }
 
-export const useFetch = (route, method='GET') => {
-    const [data, setData] = useState([]);
+export const useFetch = <Type>(route: string, method='GET') => {
+    const [data, setData] = useState<Type[]>([]);
     const [refreshToggle, setResfreshToggle] = useState(false);
     const [loading, setLoading] = useState(false);
     
-    const refresh = () => {
+    const refresh = () : void => {
       setResfreshToggle(!refreshToggle);
     }
 
@@ -38,7 +43,7 @@ export const useFetch = (route, method='GET') => {
         headers: {}
       }
       setLoading(true);
-      const res = fetch(url, method === 'GET' ? {} : HEADERS)
+      const res = fetch(url)
       .then((res) => {
         return res.json()
       }).then((json) => {
@@ -47,5 +52,7 @@ export const useFetch = (route, method='GET') => {
         setLoading(false);
       })
     }, [refreshToggle]);
-    return [data, loading, refresh]
+
+    const res: [Type | Type[], boolean, () => void] = [data, loading, refresh]
+    return res;
 }

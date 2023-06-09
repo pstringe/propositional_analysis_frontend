@@ -1,0 +1,1 @@
+export type Value = 'T' | 'A' | 'U' | 'R' | 'F' | 'C'
